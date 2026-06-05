@@ -33,6 +33,11 @@ INVERTER_REPLACEMENT_RATE = 0.12  # 12 % du CAPEX (fourchette 10-15 %)
 
 # --- Valorisation de l'energie (EUR/kWh) ---
 AUTOCONSO_PRICE = 0.20        # prix evite reseau tertiaire (15-25 c)
+# Part de la production consommee sur place (autoconsommation avec vente du surplus).
+# Une toiture tertiaire 100 kWc consomme rarement 100 % sur place : 50-70 % typique.
+TAUX_AUTOCONSO = 0.65
+# Taux pour l'analyse de sensibilite
+AUTOCONSO_RATES = [0.40, 0.65, 0.90]
 # Tarif de vente S21 par tranche de puissance (EUR/kWh)
 VENTE_TARIFFS = [
     (0, 9, 0.13),

@@ -37,10 +37,17 @@ def vente_tariff(power_kwc):
     return config.VENTE_TARIFFS[-1][2]
 
 
-def energy_price(power_kwc, regime):
-    """Prix de valorisation de l'energie (EUR/kWh) selon le regime."""
+def energy_price(power_kwc, regime, taux_autoconso=None):
+    """Prix moyen de valorisation de l'energie (EUR/kWh) selon le regime.
+
+    - 'vente'    : vente totale au tarif S21.
+    - 'autoconso': autoconsommation avec vente du surplus. La part `taux_autoconso`
+      (par defaut config.TAUX_AUTOCONSO) est valorisee au prix evite
+      (AUTOCONSO_PRICE), le surplus est vendu au tarif S21.
+    """
     if regime == "autoconso":
-        return config.AUTOCONSO_PRICE
+        taux = config.TAUX_AUTOCONSO if taux_autoconso is None else taux_autoconso
+        return taux * config.AUTOCONSO_PRICE + (1 - taux) * vente_tariff(power_kwc)
     if regime == "vente":
         return vente_tariff(power_kwc)
     raise ValueError(f"regime inconnu : {regime!r}")
@@ -51,11 +58,11 @@ def annual_production(power_kwc, facteur, year):
     return power_kwc * facteur * (1 - config.DEGRADATION) ** (year - 1)
 
 
-def cashflows(power_kwc, facteur, regime):
+def cashflows(power_kwc, facteur, regime, taux_autoconso=None):
     """Flux de tresorerie annuels (EUR), annee 0 a PROJECT_YEARS."""
     invest = capex(power_kwc)
     opex = invest * config.OPEX_RATE
-    price = energy_price(power_kwc, regime)
+    price = energy_price(power_kwc, regime, taux_autoconso)
     flows = [-invest]  # annee 0
     for year in range(1, config.PROJECT_YEARS + 1):
         revenue = annual_production(power_kwc, facteur, year) * price

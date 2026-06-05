@@ -71,3 +71,14 @@ def test_better_gisement_improves_irr():
 def test_payback_returns_year_within_horizon():
     pb = eco.payback(eco.cashflows(100, 1300, regime="autoconso"))
     assert 1 <= pb <= config.PROJECT_YEARS
+
+
+def test_autoconso_price_is_blend_between_vente_and_avoided():
+    p = eco.energy_price(100, "autoconso")
+    assert eco.vente_tariff(100) < p < config.AUTOCONSO_PRICE
+
+
+def test_higher_autoconso_rate_increases_price():
+    low = eco.energy_price(100, "autoconso", taux_autoconso=0.4)
+    high = eco.energy_price(100, "autoconso", taux_autoconso=0.9)
+    assert high > low

@@ -43,8 +43,9 @@ gdf[["code_dept", "nom_dept", "facteur_production", "source"]].head()""")
 
 md("""## 2. Calcul des indicateurs economiques par departement
 
-Installation de reference : **100 kWc**, regime **autoconsommation**
-(le plus rentable pour le tertiaire selon la note).""")
+Installation de reference : **100 kWc**, regime **autoconsommation avec vente
+du surplus** (taux d'autoconso = 65 %, le plus rentable pour le tertiaire
+selon la note). Voir la sensibilite a ce taux en section 4.4.""")
 code("""P = config.REF_POWER_KWC
 REGIME = "autoconso"
 
@@ -98,10 +99,33 @@ sud = gdf.nlargest(5, "facteur_production")[["nom_dept", "facteur_production"]]
 print("5 plus faibles (Nord) :"); print(nord.to_string(index=False))
 print("\\n5 plus eleves (Sud) :"); print(sud.to_string(index=False))""")
 
+md("""### 4.4 Sensibilite au taux d'autoconsommation
+
+Le TRI en autoconsommation depend fortement de la part reellement consommee
+sur place. On fait varier ce taux pour un departement median.""")
+code('''fac_med = gdf["facteur_production"].median()
+rows = []
+for taux in config.AUTOCONSO_RATES:
+    cf = eco.cashflows(config.REF_POWER_KWC, fac_med, "autoconso", taux_autoconso=taux)
+    irr = eco.irr(cf)
+    rows.append({"taux_autoconso": f"{taux:.0%}",
+                 "TRI_%": round(irr * 100, 1) if irr else None,
+                 "payback_ans": eco.payback(cf)})
+import pandas as pd
+sensib = pd.DataFrame(rows)
+print(sensib.to_string(index=False))
+viz.bar_chart(sensib["taux_autoconso"], sensib["TRI_%"],
+    f"Sensibilite du TRI au taux d'autoconsommation (facteur median = {fac_med:.0f})",
+    "Taux d'autoconsommation", "TRI (%)");''')
+
 md("""## 5. Limites et hypotheses
 
 - **Gisement** : PVGIS, installation type (30 deg, Sud, pertes 14 %). Reel.
 - **Couts/tarifs** : hypotheses (Annexe A), non specifiques au batiment.
+- **Autoconsommation** : modelisee avec un taux de 65 % (surplus vendu au tarif S21).
+  Le TRI y est eleve, ce qui rejoint le constat de rentabilite de la note (section 1.2) ;
+  la vente totale (payback 9-15 ans) recoupe le benchmark conservateur.
+- **Sensibilite** : le taux d'autoconsommation est le parametre le plus influent (section 4.4).
 - **Analyse agregee** : pas d'etude batiment par batiment (= role de Simeo).
 - **Indicateurs** : calcules par le modele, reproductibles, auditables via `config.py`.
 
