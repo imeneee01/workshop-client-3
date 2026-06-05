@@ -22,9 +22,14 @@ def download_geojson():
 
 
 def add_centroids(gdf):
-    """Ajoute lat/lon du centroide de chaque geometrie (EPSG:4326)."""
+    """Ajoute lat/lon du centroide de chaque geometrie.
+
+    Le centroide est calcule en projection metrique Lambert-93 (EPSG:2154)
+    puis reprojete en WGS84, ce qui est correct geometriquement et evite
+    l'avertissement de geopandas sur le calcul en CRS geographique.
+    """
     gdf = gdf.copy()
-    cent = gdf.geometry.centroid
+    cent = gdf.geometry.to_crs(2154).centroid.to_crs(4326)
     gdf["lat"] = cent.y
     gdf["lon"] = cent.x
     return gdf

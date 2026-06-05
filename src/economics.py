@@ -30,11 +30,24 @@ def capex(power_kwc):
 
 
 def vente_tariff(power_kwc):
-    """Tarif de vente S21 (EUR/kWh) selon la tranche de puissance."""
-    for low, high, value in config.VENTE_TARIFFS:
-        if low < power_kwc <= high:
-            return value
-    return config.VENTE_TARIFFS[-1][2]
+    """Tarif de vente S21 (EUR/kWh) selon la tranche de puissance.
+
+    Meme convention que capex_per_kwc : intervalles semi-ouverts [low, high),
+    derniere tranche fermee [low, high]. Une puissance sur une borne (ex. 100 kWc)
+    releve donc de la tranche superieure, comme pour le CAPEX.
+    """
+    brackets = config.VENTE_TARIFFS
+    for i, (low, high, value) in enumerate(brackets):
+        if i < len(brackets) - 1:
+            if low <= power_kwc < high:
+                return value
+        else:
+            if low <= power_kwc <= high:
+                return value
+    # hors bornes : on prend la tranche la plus proche
+    if power_kwc < brackets[0][0]:
+        return brackets[0][2]
+    return brackets[-1][2]
 
 
 def energy_price(power_kwc, regime, taux_autoconso=None):
