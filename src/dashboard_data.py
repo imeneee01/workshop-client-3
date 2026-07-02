@@ -3,7 +3,6 @@
 Aucune logique UI ici : fonctions pures, testables, qui enrichissent la table
 departementale avec les indicateurs economiques calcules.
 """
-import os
 import pandas as pd
 from src import config, economics as eco
 from src.assumptions import Assumptions

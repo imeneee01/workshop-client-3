@@ -13,7 +13,7 @@ from src import dashboard_data as dd
 from src import economics as eco
 from src import viz
 
-st.set_page_config(page_title="Potentiel PV tertiaire — France", layout="wide")
+st.set_page_config(page_title="Potentiel photovoltaïque tertiaire — France", layout="wide")
 
 
 @st.cache_data
@@ -26,17 +26,17 @@ def _geo():
     return dd.load_geodata()
 
 
-st.title("Potentiel photovoltaique tertiaire en France")
-st.caption("Toitures 9-500 kWc — donnees PVGIS (reelles) + hypotheses ajustables")
+st.title("Potentiel photovoltaïque tertiaire en France")
+st.caption("Toitures 9-500 kWc — données PVGIS (réelles) + hypothèses ajustables")
 
 # --- Barre laterale : hypotheses ---
 base = Assumptions.default()
 with st.sidebar:
-    st.header("Hypotheses")
-    regime = st.selectbox("Regime de valorisation", ["autoconso", "vente"])
+    st.header("Hypothèses")
+    regime = st.selectbox("Régime de valorisation", ["autoconso", "vente"])
     power = st.select_slider("Puissance (kWc)", options=[9.0, 36.0, 100.0, 250.0, 500.0], value=100.0)
     opex = st.slider("OPEX (% du CAPEX/an)", 0.5, 3.0, base.opex_rate * 100, 0.1) / 100
-    autoconso_price = st.slider("Prix evite autoconso (c/kWh)", 10.0, 30.0, base.autoconso_price * 100, 0.5) / 100
+    autoconso_price = st.slider("Prix évité autoconso (c/kWh)", 10.0, 30.0, base.autoconso_price * 100, 0.5) / 100
     taux = st.slider("Taux d'autoconsommation (%)", 30, 100, int(base.taux_autoconso * 100)) / 100
     discount = st.slider("Taux d'actualisation (%)", 0.0, 10.0, base.discount_rate * 100, 0.5) / 100
     capex_mult = st.slider("CAPEX (multiplicateur)", 0.6, 1.6, 1.0, 0.05)
@@ -50,7 +50,7 @@ a = replace(
 df = dd.compute_indicators(_base_table(), power, regime, a=a)
 
 # --- Vue nationale : KPI ---
-st.subheader("Synthese nationale")
+st.subheader("Synthèse nationale")
 c1, c2, c3, c4 = st.columns(4)
 c1.metric("LCOE moyen", f"{df['lcoe'].mean()*100:.1f} c/kWh")
 c2.metric("Payback moyen", f"{df['payback'].mean():.1f} ans")
@@ -60,14 +60,14 @@ c4.metric("VAN moyenne", f"{df['van'].mean()/1000:.0f} k EUR")
 # --- Carte choroplethe ---
 st.subheader("Cartographie")
 indic = st.selectbox("Indicateur cartographie", ["facteur_production", "lcoe", "payback", "tri"])
-gdf = _geo().merge(df, on="code_dept", how="left")
+gdf = _geo().drop(columns=["nom_dept"], errors="ignore").merge(df, on="code_dept", how="left")
 labels = {"facteur_production": "kWh/kWc/an", "lcoe": "EUR/kWh", "payback": "annees", "tri": "TRI"}
-fig = viz.choropleth(gdf, indic, f"{indic} par departement", legend_label=labels[indic])
+fig = viz.choropleth(gdf, indic, f"{indic} par département", legend_label=labels[indic])
 st.pyplot(fig)
 
 # --- Vue departement ---
-st.subheader("Detail par departement")
-choix = st.selectbox("Departement", df["nom_dept"] if "nom_dept" in df else df["code_dept"])
+st.subheader("Détail par département")
+choix = st.selectbox("Département", df["nom_dept"] if "nom_dept" in df else df["code_dept"])
 key = "nom_dept" if "nom_dept" in df else "code_dept"
 row = df[df[key] == choix].iloc[0]
 d1, d2, d3, d4 = st.columns(4)
@@ -78,10 +78,10 @@ d4.metric("VAN", f"{row['van']/1000:.0f} k EUR")
 
 flows = eco.cashflows(power, row["facteur_production"], regime, a=a)
 cumul = pd.Series(flows).cumsum()
-st.line_chart(pd.DataFrame({"Cash-flow cumule (EUR)": cumul}))
+st.line_chart(pd.DataFrame({"Cash-flow cumulé (EUR)": cumul}))
 
 # --- Sensibilite ---
-st.subheader("Sensibilite au taux d'autoconsommation")
+st.subheader("Sensibilité au taux d'autoconsommation")
 rows = []
 for t in [0.40, 0.65, 0.90]:
     at = replace(a, taux_autoconso=t)
@@ -90,6 +90,6 @@ for t in [0.40, 0.65, 0.90]:
 st.bar_chart(pd.DataFrame(rows).set_index("taux_autoconso"))
 
 # --- Donnees + telechargement ---
-st.subheader("Donnees")
+st.subheader("Données")
 st.dataframe(df)
-st.download_button("Telecharger le CSV", df.to_csv(index=False), "departements_pv_indicateurs.csv")
+st.download_button("Télécharger le CSV", df.to_csv(index=False), "departements_pv_indicateurs.csv")
