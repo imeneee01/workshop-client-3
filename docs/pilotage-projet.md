@@ -52,13 +52,13 @@ jeu** — exactement le périmètre demandé, ni plus ni moins.
 
 *Critères couverts : (2) ajustement aux tendances/obligations réglementaires, (6) planning optimisé et cohérent.*
 
-Le planning est construit pour livrer un noyau fonctionnel (données +
-modèle économique) dès le milieu de semaine, condition nécessaire pour que le
-dashboard et la documentation finale ne dépendent pas d'un dérapage amont.
-L'ordre des lots reflète aussi la hiérarchie des dépendances techniques :
-on ne peut pas construire le dashboard avant d'avoir un modèle économique
-paramétrable, ni le dossier technique avant d'avoir le dashboard et le
-pilotage.
+Le planning prévisionnel d'une semaine est construit pour livrer un noyau
+fonctionnel (données + modèle économique) dès le milieu de semaine, condition
+nécessaire pour que le dashboard et la documentation finale ne dépendent pas
+d'un dérapage amont. L'ordre des lots reflète aussi la hiérarchie des
+dépendances techniques : on ne peut pas construire le dashboard avant d'avoir
+un modèle économique paramétrable, ni le dossier technique avant d'avoir le
+dashboard et le pilotage.
 
 L'ajustement aux obligations réglementaires du client est fait **en amont**,
 dès le cadrage : le choix du segment (toiture tertiaire 9–500 kWc), de la
@@ -87,7 +87,7 @@ gantt
     Taux d'autoconsommation + analyse de sensibilité :done, model2, after model, 1d
 
     section Dashboard
-    Refactor Assumptions (hypothèses paramétrables) :done, dash1, 2026-07-02, 1d
+    Refactor Assumptions (hypothèses paramétrables) :done, dash1, after model2, 1d
     Dashboard Streamlit (cartes, KPI, sensibilité) + déploiement :active, dash2, after dash1, 1d
 
     section Recettage
@@ -99,17 +99,18 @@ gantt
     Soutenance :milestone, soutenance, after dossier, 0d
 ```
 
-**Jalons clés :**
+**Jalons clés (planning prévisionnel) :**
 
-| Jalon | Date cible | Statut |
+| Jalon | Jour | Statut |
 |---|---|---|
-| Note de cadrage validée | 29/06/2026 | Fait |
-| Jeu de données départemental consolidé | 30/06/2026 | Fait |
-| Modèle économique testé (28 tests) | 01/07/2026 | Fait |
-| Dashboard Streamlit déployé | 02/07/2026 | En cours |
-| Document de pilotage | 02/07/2026 | En cours (ce document) |
-| Dossier technique remis | J-10 avant soutenance | À venir |
-| Soutenance | Selon calendrier école | À venir |
+| Note de cadrage validée | J1 | Fait |
+| Jeu de données départemental consolidé | J2 | Fait |
+| Modèle économique testé (28 tests) | J3 | Fait |
+| Dashboard Streamlit déployé | J4 | En cours |
+| Document de pilotage | J4 | En cours (ce document) |
+| Recettage & relecture croisée | J5 | À venir |
+| Dossier technique remis | J6 | À venir |
+| Soutenance | J7 | À venir |
 
 ---
 
