@@ -82,3 +82,22 @@ def test_higher_autoconso_rate_increases_price():
     low = eco.energy_price(100, "autoconso", taux_autoconso=0.4)
     high = eco.energy_price(100, "autoconso", taux_autoconso=0.9)
     assert high > low
+
+
+from src.assumptions import Assumptions
+
+
+def test_assumptions_default_matches_config_behaviour():
+    # passer default() doit donner exactement le meme resultat qu'avant
+    a = Assumptions.default()
+    assert eco.capex_per_kwc(50, a=a) == eco.capex_per_kwc(50)
+    assert eco.lcoe(100, 1100, a=a) == eco.lcoe(100, 1100)
+
+
+def test_custom_capex_changes_payback():
+    base = Assumptions.default()
+    from dataclasses import replace
+    pricey = replace(base, capex_brackets=((9, 36, 3000.0), (36, 100, 3000.0), (100, 500, 3000.0)))
+    pb_base = eco.payback(eco.cashflows(100, 1200, "autoconso", a=base), a=base)
+    pb_pricey = eco.payback(eco.cashflows(100, 1200, "autoconso", a=pricey), a=pricey)
+    assert pb_pricey > pb_base
