@@ -185,18 +185,15 @@ _(captures d'écran à insérer)_
 le 02/07/2026) :
 
 ```
-============================= test session starts =============================
-platform win32 -- Python 3.11.0, pytest-9.0.2, pluggy-1.6.0
-collected 28 items
-
-tests/test_assumptions.py ...                                            [ 10%]
-tests/test_dashboard_data.py ...                                         [ 21%]
-tests/test_dataset.py .                                                  [ 25%]
-tests/test_economics.py ...................                              [ 82%]
-tests/test_gisement.py ...                                               [ 92%]
-tests/test_viz.py ..                                                     [100%]
-
-======================= 28 passed, 2 warnings in 4.11s ========================
+$ python -m pytest -v
+...
+tests/test_assumptions.py ...        (3)
+tests/test_dashboard_data.py ...     (3)
+tests/test_dataset.py .              (1)
+tests/test_economics.py ............ (16)
+tests/test_gisement.py ...           (3)
+tests/test_viz.py ..                 (2)
+======================= 28 passed, 2 warnings in 6.36s =======================
 ```
 
 **28 tests, tous passants** (0 échec). Les 2 avertissements (`DeprecationWarning`
