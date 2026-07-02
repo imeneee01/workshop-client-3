@@ -25,6 +25,18 @@ python -m pip install -r requirements.txt
 3. Ouvrir `notebooks/analyse_pv_france.ipynb` dans Jupyter (ou l'exécuter :
    `python -m jupyter nbconvert --to notebook --execute --inplace notebooks/analyse_pv_france.ipynb`).
 
+## Dashboard interactif
+
+Local :
+```powershell
+python -m streamlit run streamlit_app.py
+```
+
+En ligne : déployé sur Streamlit Community Cloud — <URL_A_COMPLETER_APRES_DEPLOIEMENT>.
+Le dashboard laisse ajuster les hypothèses (CAPEX, OPEX, tarifs, taux
+d'autoconso, taux d'actualisation) et recalcule LCOE / payback / TRI / VAN et
+les cartes en direct.
+
 ## Tests
 
 ```powershell

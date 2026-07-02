@@ -1,5 +1,10 @@
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
-data/raw/pvgis_cache.csv
 .pytest_cache/
+
+# Donnees de runtime necessaires au dashboard deploye (Streamlit Cloud) :
+# on les commite pour eviter tout appel a l'API PVGIS au demarrage.
+!data/processed/departements_pv.csv
+!data/raw/departements.geojson
+!data/raw/pvgis_cache.csv
