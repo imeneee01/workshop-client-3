@@ -41,8 +41,8 @@
 questions pour Simeo : *combien produit une installation type, combien
 coûte-t-elle, est-elle rentable ?* Le livrable y répond concrètement par
 département : gisement PVGIS réel, modèle économique testé (LCOE, payback,
-TRI, VAN), et un dashboard interactif permettant à Oxand de rejouer les
-hypothèses (CAPEX, OPEX, taux d'autoconsommation) sans toucher au code. Le
+TRI, VAN), et un dashboard interactif permettant à Oxand d'explorer les
+résultats par département (choix du régime de valorisation et de la puissance). Le
 projet ne construit pas le futur module Simeo mais **caractérise le terrain de
 jeu** — exactement le périmètre demandé, ni plus ni moins.
 
@@ -168,7 +168,7 @@ sur le fallback) et remonté au board dès sa détection.
 |---|---|---|---|---|
 | Indisponibilité / limitation de l'API PVGIS (quota, panne, latence) | Moyenne | Élevé (bloque la collecte des 96 départements) | Cache local des réponses (`src/gisement.py`) dès le premier appel réussi + **fallback synthétique** basé sur un gradient Nord-Sud si l'API est indisponible, pour ne jamais bloquer la suite du pipeline | Maîtrisé — cache + fallback implémentés et testés (`tests/test_gisement.py`) |
 | Dérive de périmètre (extension non planifiée : Europe, résidentiel, bâtiment par bâtiment) | Moyenne | Élevé (menace le respect des délais) | Note de cadrage **figée** dès le premier jour, avec un périmètre explicite (France métropolitaine, tertiaire 9–500 kWc, granularité départementale) et une section « hors périmètre / YAGNI » assumée | Maîtrisé — périmètre respecté sur l'ensemble du projet |
-| Hypothèses économiques datées ou approximatives (CAPEX, OPEX, tarifs S21) | Élevée (les prix évoluent vite) | Moyen (fausse la précision affichée mais pas la méthode) | Étiquetage explicite de la nature de chaque donnée (réelle / hypothèse / calculée, cf. tableau README) + **analyse de sensibilité** (taux d'autoconsommation 40/65/90 %) pour montrer la robustesse des conclusions plutôt que des valeurs figées ; hypothèses rendues modifiables via la dataclass `Assumptions` et les curseurs du dashboard | Maîtrisé — étiquetage en place, sensibilité disponible dans le notebook et le dashboard |
+| Hypothèses économiques datées ou approximatives (CAPEX, OPEX, tarifs S21) | Élevée (les prix évoluent vite) | Moyen (fausse la précision affichée mais pas la méthode) | Étiquetage explicite de la nature de chaque donnée (réelle / hypothèse / calculée, cf. tableau README) + **analyse de sensibilité** (taux d'autoconsommation 40/65/90 %) pour montrer la robustesse des conclusions plutôt que des valeurs figées ; hypothèses centralisées et facilement révisables via la dataclass `Assumptions` | Maîtrisé — étiquetage en place, sensibilité disponible dans le notebook et le dashboard |
 | Temps limité (une semaine, une seule contributrice) | Élevée | Élevé (risque structurel du format) | Application stricte du principe **YAGNI** (pas d'authentification, pas d'appel PVGIS en direct en production, pas d'extension Europe) et priorisation stricte des lots (données et modèle avant dashboard, dashboard avant documentation finale) | Maîtrisé — arbitrages YAGNI documentés dans la spec technique |
 | Dépendance à des données géographiques externes (GeoJSON officiel) mal alignées (projection, découpage) | Faible | Moyen (erreurs de centroïdes/cartes) | Harmonisation explicite des projections (Lambert-93) et des bornes de tranches, revue finale dédiée (commit de fiabilisation) | Maîtrisé |
 

@@ -33,9 +33,10 @@ python -m streamlit run streamlit_app.py
 ```
 
 En ligne : déployé sur Streamlit Community Cloud — <URL_A_COMPLETER_APRES_DEPLOIEMENT>.
-Le dashboard laisse ajuster les hypothèses (CAPEX, OPEX, tarifs, taux
-d'autoconso, taux d'actualisation) et recalcule LCOE / payback / TRI / VAN et
-les cartes en direct.
+Le dashboard présente, pour des hypothèses économiques fixes (celles de la note
+de cadrage), les indicateurs LCOE / payback / TRI / VAN et les cartes par
+département. L'utilisateur choisit le régime de valorisation (autoconsommation /
+vente) et la puissance de l'installation.
 
 ## Tests
 

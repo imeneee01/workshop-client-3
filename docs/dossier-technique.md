@@ -45,8 +45,8 @@ départementale → modèle économique paramétrable → couche de préparation
 la restitution → restitution (notebook narratif + dashboard interactif). Le
 code est développé en TDD (`tests/`), avec des hypothèses économiques
 centralisées et jamais codées en dur dans la logique métier, pour rester
-auditable et modifiable par le client sans toucher au code (curseurs du
-dashboard).
+auditables et facilement révisables en un seul endroit (`config.py` / la
+dataclass `Assumptions`).
 
 ### 2.2 Modules et rôles
 
@@ -152,12 +152,13 @@ issue du fallback synthétique dans le jeu de données consolidé actuel) :
 
 ## 5. Dashboard
 
-**Objet** : dashboard Streamlit interactif permettant à Oxand d'explorer les
-résultats et de rejouer les hypothèses (régime de valorisation, puissance de
-l'installation, OPEX, prix évité de l'autoconsommation, taux
-d'autoconsommation, taux d'actualisation, multiplicateur CAPEX) sans
-intervention sur le code, avec recalcul en direct des indicateurs et des
-cartes.
+**Objet** : dashboard Streamlit permettant à Oxand d'explorer les résultats par
+département. Les hypothèses économiques sont **fixes** (celles de la note de
+cadrage) et affichées pour transparence ; l'utilisateur choisit le **régime de
+valorisation** (autoconsommation / vente) et la **puissance** de l'installation.
+Le dashboard présente les indicateurs nationaux, une carte choroplèthe, le
+détail par département avec un **verdict de rentabilité**, une analyse de
+sensibilité et l'export des données en CSV.
 
 **Fonctionnalités** :
 - synthèse nationale (LCOE, payback, TRI, VAN moyens) ;
