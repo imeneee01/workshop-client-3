@@ -8,3 +8,6 @@ __pycache__/
 !data/processed/departements_pv.csv
 !data/raw/departements.geojson
 !data/raw/pvgis_cache.csv
+
+# Documents de travail internes (specs/plans) — non versionnés
+docs/superpowers/
