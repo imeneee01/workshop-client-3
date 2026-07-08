@@ -59,40 +59,16 @@ dataclass `Assumptions`).
 | `src/economics.py` | Modèle économique pur (fonctions sans état, paramétrées par un objet `Assumptions` optionnel) : CAPEX/OPEX par tranche de puissance, prix de valorisation de l'énergie selon le régime (autoconsommation avec vente du surplus / vente totale), flux de trésorerie annuels, VAN, TRI (bissection), LCOE, payback. |
 | `src/dashboard_data.py` | Couche de préparation des données pour la restitution, sans aucune logique d'interface : `compute_indicators` enrichit la table départementale avec LCOE/payback/TRI/VAN calculés via `economics`, `load_departements`/`load_geodata` chargent les tables consolidées. Fonctions pures et testées indépendamment de Streamlit. |
 | `src/viz.py` | Génère les visualisations (cartes choroplèthes départementales, diagrammes en barres simples et groupés) à partir de `matplotlib`, réutilisées à la fois par le notebook et par le dashboard. |
-| `streamlit_app.py` | Dashboard interactif : réutilise exclusivement `src/` (aucune logique métier propre), expose les hypothèses modifiables via une barre latérale (régime, puissance, OPEX, prix évité, taux d'autoconsommation, taux d'actualisation, multiplicateur CAPEX) et recalcule en direct les KPI nationaux, la carte choroplèthe, le détail par département et l'analyse de sensibilité. |
+| `streamlit_app.py` | Dashboard interactif : réutilise exclusivement `src/` (aucune logique métier propre). Les hypothèses économiques sont fixes (celles de la note de cadrage) ; l'utilisateur choisit le régime de valorisation et la puissance, et le dashboard recalcule les KPI nationaux, la carte choroplèthe, le détail par département avec un verdict de rentabilité, et l'analyse de sensibilité. |
 
 ### 2.3 Flux de données
 
-```mermaid
-flowchart LR
-    subgraph Sources["Sources externes"]
-        GEOJSON["GeoJSON officiel\ndépartements (contours)"]
-        PVGIS["API PVGIS (JRC)\ngisement solaire réel"]
-    end
+![Architecture technique — du flux de données à la restitution](exports/assets/architecture.jpg)
 
-    subgraph Hypotheses["Hypothèses"]
-        CONFIG["config.py\n(CAPEX, OPEX, tarifs S21,\ntaux autoconso, taux actualisation)"]
-        ASSUMP["assumptions.py\n(dataclass Assumptions,\nmodifiable à chaud)"]
-    end
-
-    GEOJSON --> DATASET["dataset.py\ncentroïdes Lambert-93\n+ fusion gisement"]
-    PVGIS --> GISEMENT["gisement.py\ncache + fallback\nsynthétique"]
-    GISEMENT --> DATASET
-    DATASET --> CSV["data/processed/\ndepartements_pv.csv\n(1 ligne = 1 département)"]
-
-    CONFIG --> ASSUMP
-    CSV --> ECO["economics.py\nLCOE / payback / TRI / VAN"]
-    ASSUMP --> ECO
-    ECO --> DD["dashboard_data.py\ncompute_indicators"]
-    CSV --> DD
-
-    DD --> VIZ["viz.py\ncartes choroplèthes,\ngraphiques"]
-    DD --> NOTEBOOK["notebooks/\nanalyse_pv_france.ipynb"]
-    VIZ --> NOTEBOOK
-    VIZ --> APP["streamlit_app.py\ndashboard interactif"]
-    DD --> APP
-    ASSUMP --> APP
-```
+*Le flux se lit de gauche à droite : les entrées (données réelles PVGIS/GeoJSON
+et hypothèses config/assumptions) alimentent la chaîne de traitement
+(gisement → dataset → economics → dashboard_data), qui produit la restitution
+(cartes, notebook, dashboard).*
 
 La règle d'architecture centrale : **les données réelles (PVGIS, GeoJSON) et
 les hypothèses (config/assumptions) sont strictement séparées** des
