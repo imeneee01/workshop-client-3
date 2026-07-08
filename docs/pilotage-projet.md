@@ -172,39 +172,10 @@ sur le fallback) et remonté au board dès sa détection.
 | Temps limité (une semaine, une seule contributrice) | Élevée | Élevé (risque structurel du format) | Application stricte du principe **YAGNI** (pas d'authentification, pas d'appel PVGIS en direct en production, pas d'extension Europe) et priorisation stricte des lots (données et modèle avant dashboard, dashboard avant documentation finale) | Maîtrisé — arbitrages YAGNI documentés dans la spec technique |
 | Dépendance à des données géographiques externes (GeoJSON officiel) mal alignées (projection, découpage) | Faible | Moyen (erreurs de centroïdes/cartes) | Harmonisation explicite des projections (Lambert-93) et des bornes de tranches, revue finale dédiée (commit de fiabilisation) | Maîtrisé |
 
----
-
-## 5. Suivi des coûts / budget
-
-*Critères couverts : (9) contrôle des coûts.*
-
-Le projet ne mobilise pas de budget matériel (données et outillage
-open-source) ; le seul poste de coût est le **temps-homme**, valorisé à un
-Taux Journalier Moyen indicatif de **500 €/jour** (ordre de grandeur
-consultant junior/étudiant, cohérent avec le contexte du workshop).
-
-| Lot | Jours-homme (prévu) | Coût (prévu, 500 €/j) | Jours-homme (réalisé) | Coût (réalisé) |
-|---|---|---|---|---|
-| Cadrage (note de cadrage, périmètre, glossaire) | 1,0 | 500 € | 1,0 | 500 € |
-| Collecte données (PVGIS, GeoJSON, cache) | 1,0 | 500 € | 1,0 | 500 € |
-| Modèle économique (LCOE, payback, TRI, VAN, tests, sensibilité) | 1,5 | 750 € | 1,5 | 750 € |
-| Dashboard (refactor `Assumptions`, Streamlit, déploiement) | 1,5 | 750 € | 1,5 | 750 € |
-| Recettage (tests complémentaires, relecture croisée) | 0,5 | 250 € | *en cours* | *en cours* |
-| Document de pilotage | 0,5 | 250 € | 0,5 | 250 € |
-| Dossier technique & exports | 1,0 | 500 € | *à venir* | *à venir* |
-| **Total** | **7,0 j** | **3 500 €** | **5,5 j (à date)** | **2 750 € (à date)** |
-
-**Contrôle des écarts** — le suivi prévu/réalisé est mis à jour à chaque
-point hebdomadaire à partir du board (une carte déplacée en `Done` clôture le
-lot correspondant). À ce stade du projet, aucun écart significatif n'est
-constaté : les lots livrés correspondent à l'enveloppe prévue. Le principal
-levier de maîtrise reste le YAGNI (section 4) : toute demande d'extension de
-périmètre est chiffrée en jours-homme supplémentaires avant acceptation, pour
-éviter un dépassement silencieux du budget-temps.
 
 ---
 
-## 6. KPI de projet
+## 5. KPI de projet
 
 *Critères couverts : (9) contrôle des coûts (suite), (7) visibilité de l'avancement.*
 
@@ -221,7 +192,7 @@ projet sans avoir à en lire le détail technique.
 
 ---
 
-## 7. Reporting client
+## 6. Reporting client
 
 *Critères couverts : (5) outils/modalités de reporting (suite), (10) tableau de bord de suivi complet.*
 
@@ -248,7 +219,7 @@ office de tableau de bord de pilotage unique et complet, articulant :
   hypothèses métier et réglementaires, référent pédagogique pour le cadrage
   méthodologique) ;
 - les **risques actifs** (registre de la section 4, lié en commentaire de
-  carte) et les **KPI** (section 6, affichés en en-tête de board).
+  carte) et les **KPI** (section 5, affichés en en-tête de board).
 
 Ce tableau de bord est l'objet central présenté à chaque point hebdomadaire :
 il permet au client de vérifier en un coup d'œil où en est le projet, sans

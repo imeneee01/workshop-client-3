@@ -173,8 +173,8 @@ sensibilité et l'export des données en CSV.
 python -m streamlit run streamlit_app.py
 ```
 
-**En ligne** : déployé sur Streamlit Community Cloud —
-`<URL_A_COMPLETER_APRES_DEPLOIEMENT>` (voir aussi `README.md`).
+**En ligne** : <https://imeneee01-workshop-client-3-streamlit-app-kzifeo.streamlit.app/>
+(déployé sur Streamlit Community Cloud).
 
 _(captures d'écran à insérer)_
 
@@ -290,10 +290,8 @@ tierce, pas du code du projet.
 
 ## 8. Liens
 
-- **Code source** : dépôt git du projet (racine du repository actuel).
-- **Dashboard déployé** : Streamlit Community Cloud —
-  `<URL_A_COMPLETER_APRES_DEPLOIEMENT>` (voir `README.md`, section « Dashboard
-  interactif »).
+- **Code source** : <https://github.com/imeneee01/workshop-client-3>
+- **Dashboard déployé** : <https://imeneee01-workshop-client-3-streamlit-app-kzifeo.streamlit.app/>
 - **Outils de gestion de projet** : board Kanban, planning, registre des
   risques, suivi budgétaire et KPI — voir le
   **[document de pilotage](pilotage-projet.md)**.

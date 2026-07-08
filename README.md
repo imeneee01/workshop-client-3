@@ -32,11 +32,13 @@ Local :
 python -m streamlit run streamlit_app.py
 ```
 
-En ligne : déployé sur Streamlit Community Cloud — <URL_A_COMPLETER_APRES_DEPLOIEMENT>.
-Le dashboard présente, pour des hypothèses économiques fixes (celles de la note
-de cadrage), les indicateurs LCOE / payback / TRI / VAN et les cartes par
-département. L'utilisateur choisit le régime de valorisation (autoconsommation /
-vente) et la puissance de l'installation.
+En ligne : <https://imeneee01-workshop-client-3-streamlit-app-kzifeo.streamlit.app/>
+(déployé sur Streamlit Community Cloud). Le dashboard présente, pour des
+hypothèses économiques fixes (celles de la note de cadrage), les indicateurs
+LCOE / payback / TRI / VAN et les cartes par département. L'utilisateur choisit
+le régime de valorisation (autoconsommation / vente) et la puissance.
+
+Code source : <https://github.com/imeneee01/workshop-client-3>
 
 ## Tests
 
