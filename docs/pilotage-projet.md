@@ -69,35 +69,7 @@ auxquels l'autoconsommation PV contribue), de RE2020 (bâtiments neufs à
 énergie positive) et de la trajectoire REPowerEU (600 GW de solaire UE d'ici
 2030), qui légitime l'urgence du sujet pour Oxand.
 
-```mermaid
-gantt
-    title Planning du projet — Potentiel PV tertiaire (semaine du 29/06 au 08/07/2026)
-    dateFormat  YYYY-MM-DD
-    axisFormat  %d/%m
-
-    section Cadrage
-    Note de cadrage (besoins, réglementation, périmètre) :done, cadrage, 2026-06-29, 1d
-
-    section Collecte données
-    Récupération PVGIS (96 départements) + cache :done, data1, after cadrage, 1d
-    Intégration GeoJSON officiel + centroïdes Lambert-93 :done, data2, after data1, 1d
-
-    section Modèle économique
-    Modèle LCOE / payback / TRI / VAN + tests unitaires :done, model, after data2, 1d
-    Taux d'autoconsommation + analyse de sensibilité :done, model2, after model, 1d
-
-    section Dashboard
-    Refactor Assumptions (hypothèses paramétrables) :done, dash1, after model2, 1d
-    Dashboard Streamlit (cartes, KPI, sensibilité) + déploiement :active, dash2, after dash1, 1d
-
-    section Recettage
-    Tests dashboard_data + relecture croisée :recette, after dash2, 1d
-
-    section Dossier & soutenance
-    Document de pilotage :pilotage, after dash2, 1d
-    Dossier technique (compilation + exports Word/PDF) :dossier, after pilotage, 1d
-    Soutenance :milestone, soutenance, after dossier, 0d
-```
+![Planning prévisionnel du workshop sur une semaine](exports/assets/gantt.jpg)
 
 **Jalons clés (planning prévisionnel) :**
 
